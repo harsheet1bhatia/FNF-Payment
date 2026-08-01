@@ -1,12 +1,14 @@
 {
   "name": "Rent Calculator",
-  "short_name": "Rent Calc",
-  "description": "Professional Rent Calculator Web App for calculating Online, Cash, and Brokerage amounts.",
+  "short_name": "RentCalc",
+  "description": "Professional Rent Calculator Web App",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#10b981",
-  "theme_color": "#10b981",
   "orientation": "portrait",
+  "background_color": "#eaf8f1",
+  "theme_color": "#198754",
+  "lang": "en",
   "icons": [
     {
       "src": "icons/icon-192.png",
