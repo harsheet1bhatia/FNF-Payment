@@ -1,116 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rent Calculator</title>
-  
-  <!-- Manifest & Favicon -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#10b981">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent Calculator</title>
 
-  <!-- Google Fonts & Stylesheet -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+    <!-- Poppins Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
 
-  <div class="app-container">
-    <!-- Header -->
-    <header class="app-header">
-      <div class="brand">
-        <div class="brand-icon">🏠</div>
-        <div>
-          <h1>Rent Calculator</h1>
-          <p>Instant Online, Cash & Brokerage Breakdown</p>
+<div class="container">
+
+    <div class="card">
+
+        <h1>Rent Calculator</h1>
+
+        <!-- Rent -->
+        <div class="form-group">
+            <label>Rent</label>
+            <input
+                type="number"
+                id="rent"
+                placeholder="Enter Rent">
+            <small class="error" id="rentError"></small>
         </div>
-      </div>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">🌙</button>
-    </header>
 
-    <!-- Rent Form -->
-    <form id="rentForm" onsubmit="return false;">
-      
-      <!-- Rent Input -->
-      <div class="form-group">
-        <label for="rent">Rent Amount (₹)</label>
-        <div class="input-wrapper">
-          <span class="icon">₹</span>
-          <input type="number" id="rent" class="form-control" placeholder="e.g. 23000" min="0">
+        <!-- People -->
+        <div class="form-group">
+            <label>How Many People Stay?</label>
+
+            <select id="people">
+                <option value="">Select</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+            </select>
+
+            <small class="error" id="peopleError"></small>
+
         </div>
-        <div class="error-message" id="rentError">Please enter Rent</div>
-      </div>
 
-      <!-- People Select Dropdown -->
-      <div class="form-group">
-        <label for="people">How Many People Stay?</label>
-        <div class="input-wrapper">
-          <span class="icon">👥</span>
-          <select id="people" class="form-control">
-            <option value="" disabled selected>Select number of people</option>
-            <option value="1">1 Person</option>
-            <option value="2">2 People</option>
-            <option value="3">3 People</option>
-            <option value="4">4 People</option>
-            <option value="5">5 People</option>
-            <option value="6">6 People</option>
-            <option value="7">7 People</option>
-            <option value="8">8 People</option>
-            <option value="9">9 People</option>
-            <option value="10">10 People</option>
-          </select>
-          <span class="select-arrow">▼</span>
+        <!-- Token -->
+        <div class="form-group">
+            <label>Token</label>
+
+            <input
+                type="number"
+                id="token"
+                placeholder="Enter Token">
+
+            <small class="error" id="tokenError"></small>
+
         </div>
-        <div class="error-message" id="peopleError">Please select How Many People Stay</div>
-      </div>
 
-      <!-- Token Input -->
-      <div class="form-group">
-        <label for="token">Token Amount (₹)</label>
-        <div class="input-wrapper">
-          <span class="icon">💸</span>
-          <input type="number" id="token" class="form-control" placeholder="e.g. 5000" min="0">
+        <!-- Buttons -->
+
+        <button id="calculateBtn" class="calculate-btn">
+            Calculate
+        </button>
+
+        <button id="resetBtn" class="reset-btn">
+            Reset
+        </button>
+
+        <!-- Results -->
+
+        <div class="result-card">
+            <span>Online</span>
+            <strong id="onlineResult">₹0</strong>
         </div>
-        <div class="error-message" id="tokenError">Please enter Token</div>
-      </div>
 
-      <!-- Buttons -->
-      <div class="button-group">
-        <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
-        <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
-      </div>
-
-    </form>
-
-    <!-- Results Section -->
-    <div class="results-container">
-      <div class="result-card">
-        <div class="result-info">
-          <span class="result-label">Online</span>
-          <span class="result-value" id="onlineResult">₹0</span>
+        <div class="result-card">
+            <span>Cash</span>
+            <strong id="cashResult">₹0</strong>
         </div>
-      </div>
 
-      <div class="result-card highlight">
-        <div class="result-info">
-          <span class="result-label">Cash</span>
-          <span class="result-value" id="cashResult">₹0</span>
+        <div class="result-card">
+            <span>Brokerage</span>
+            <strong id="brokerageResult">₹0</strong>
         </div>
-      </div>
 
-      <div class="result-card brokerage">
-        <div class="result-info">
-          <span class="result-label">Brokerage</span>
-          <span class="result-value" id="brokerageResult">₹0</span>
-        </div>
-      </div>
+        <!-- Copy -->
 
-      <button type="button" class="btn-copy" id="copyBtn">📋 Copy Breakdown</button>
+        <button id="copyBtn" class="copy-btn">
+            📋 Copy Result
+        </button>
+
+        <!-- Dark Mode -->
+
+        <button id="themeBtn" class="theme-btn">
+            🌙 Dark Mode
+        </button>
+
+        <p class="footer">
+            Built by Harsheet
+        </p>
+
     </div>
 
-  </div>
+</div>
 
-  <!-- JavaScript File Link -->
-  <script src="script.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
