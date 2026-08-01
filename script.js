@@ -1,185 +1,191 @@
-/* ==========================================
-   Rent Calculator - JavaScript Logic
-   ========================================== */
+// Inputs
+const rent = document.getElementById("rent");
+const people = document.getElementById("people");
+const token = document.getElementById("token");
 
-document.addEventListener('DOMContentLoaded', () => {
-  // DOM Elements
-  const rentInput = document.getElementById('rent');
-  const peopleSelect = document.getElementById('people');
-  const tokenInput = document.getElementById('token');
+// Buttons
+const calculateBtn = document.getElementById("calculateBtn");
+const resetBtn = document.getElementById("resetBtn");
+const copyBtn = document.getElementById("copyBtn");
 
-  const rentError = document.getElementById('rentError');
-  const peopleError = document.getElementById('peopleError');
-  const tokenError = document.getElementById('tokenError');
+// Results
+const onlineResult = document.getElementById("onlineResult");
+const cashResult = document.getElementById("cashResult");
+const brokerageResult = document.getElementById("brokerageResult");
 
-  const onlineOutput = document.getElementById('onlineResult');
-  const cashOutput = document.getElementById('cashResult');
-  const brokerageOutput = document.getElementById('brokerageResult');
+// Errors
+const rentError = document.getElementById("rentError");
+const peopleError = document.getElementById("peopleError");
+const tokenError = document.getElementById("tokenError");
 
-  const calculateBtn = document.getElementById('calculateBtn');
-  const resetBtn = document.getElementById('resetBtn');
-  const copyBtn = document.getElementById('copyBtn');
-  const themeToggleBtn = document.getElementById('themeToggle');
+// Count Animation
+function animateValue(element, start, end, duration = 700) {
 
-  // Animated Count-Up Function
-  function animateValue(element, start, end, duration = 400) {
-    if (isNaN(end)) {
-      element.textContent = '₹0';
-      return;
-    }
-    const range = end - start;
-    let current = start;
-    const increment = end > start ? Math.ceil(range / (duration / 16)) : Math.floor(range / (duration / 16));
-    const stepTime = 16;
+    let startTime = null;
 
-    const timer = setInterval(() => {
-      current += increment;
-      if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-        current = end;
-        clearInterval(timer);
-      }
-      element.textContent = '₹' + current.toLocaleString('en-IN');
-    }, stepTime);
-  }
+    function animation(currentTime) {
 
-  // Current calculated numerical values for copying
-  let currentResults = {
-    online: 0,
-    cash: 0,
-    brokerage: 0
-  };
+        if (!startTime) startTime = currentTime;
 
-  // Validation Logic
-  function validateInputs() {
-    let isValid = true;
+        const progress = Math.min((currentTime - startTime) / duration, 1);
 
-    // Rent Validation
-    if (!rentInput.value.trim() || parseFloat(rentInput.value) < 0) {
-      rentError.style.display = 'block';
-      rentError.textContent = 'Please enter Rent';
-      isValid = false;
-    } else {
-      rentError.style.display = 'none';
+        const value = Math.floor(progress * (end - start) + start);
+
+        element.innerText = "₹" + value.toLocaleString();
+
+        if (progress < 1) {
+            requestAnimationFrame(animation);
+        }
+
     }
 
-    // People Validation
-    if (!peopleSelect.value) {
-      peopleError.style.display = 'block';
-      peopleError.textContent = 'Please select How Many People Stay';
-      isValid = false;
-    } else {
-      peopleError.style.display = 'none';
+    requestAnimationFrame(animation);
+
+}
+
+// Validation
+function validate() {
+
+    let valid = true;
+
+    rentError.innerText = "";
+    peopleError.innerText = "";
+    tokenError.innerText = "";
+
+    if (rent.value === "") {
+        rentError.innerText = "Please enter Rent";
+        valid = false;
     }
 
-    // Token Validation
-    if (!tokenInput.value.trim() || parseFloat(tokenInput.value) < 0) {
-      tokenError.style.display = 'block';
-      tokenError.textContent = 'Please enter Token';
-      isValid = false;
-    } else {
-      tokenError.style.display = 'none';
+    if (people.value === "") {
+        peopleError.innerText = "Please select How Many People Stay";
+        valid = false;
     }
 
-    return isValid;
-  }
-
-  // Calculate Logic
-  function calculateRent() {
-    if (!validateInputs()) {
-      return;
+    if (token.value === "") {
+        tokenError.innerText = "Please enter Token";
+        valid = false;
     }
 
-    const rent = parseFloat(rentInput.value) || 0;
-    const people = parseInt(peopleSelect.value) || 0;
-    const token = parseFloat(tokenInput.value) || 0;
+    return valid;
 
-    // Hidden Backend Calculations
-    const security = rent;
-    const documentation = (people * 500) + 500;
+}
+
+// Main Calculator
+function calculateRent() {
+
+    if (!validate()) return;
+
+    const r = Number(rent.value);
+    const p = Number(people.value);
+    const t = Number(token.value);
+
+    // Hidden Values
+    const security = r;
+    const documentation = (p * 500) + 500;
 
     let online = 0;
     let cash = 0;
+    let brokerage = r / 2;
 
-    // Formula Implementation
-    if (rent <= 19000) {
-      online = rent + documentation + (security - token);
-      cash = 0;
+    if (r <= 19000) {
+
+        online = r + documentation + (security - t);
+
+        cash = 0;
+
     } else {
-      online = 20000 + (security - token);
-      cash = (rent - 20000) + documentation;
+
+        online = 20000 + (security - t);
+
+        cash = (r - 20000) + documentation;
+
     }
 
-    const brokerage = rent / 2;
+    animateValue(onlineResult, 0, online);
 
-    // Animate Output Numbers
-    animateValue(onlineOutput, currentResults.online, online);
-    animateValue(cashOutput, currentResults.cash, cash);
-    animateValue(brokerageOutput, currentResults.brokerage, brokerage);
+    animateValue(cashResult, 0, cash);
 
-    // Save state
-    currentResults.online = online;
-    currentResults.cash = cash;
-    currentResults.brokerage = brokerage;
-  }
+    animateValue(brokerageResult, 0, brokerage);
 
-  // Auto-Calculate on Input Change
-  [rentInput, peopleSelect, tokenInput].forEach(input => {
-    input.addEventListener('input', () => {
-      if (rentInput.value && peopleSelect.value && tokenInput.value) {
-        calculateRent();
-      }
+}
+
+// Calculate Button
+calculateBtn.addEventListener("click", calculateRent);
+
+// Auto Calculate
+[rent, people, token].forEach(input => {
+
+    input.addEventListener("input", () => {
+
+        if (
+            rent.value !== "" &&
+            people.value !== "" &&
+            token.value !== ""
+        ) {
+
+            calculateRent();
+
+        }
+
     });
-  });
 
-  // Calculate Button Click
-  if (calculateBtn) {
-    calculateBtn.addEventListener('click', calculateRent);
-  }
+});
 
-  // Reset Button
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      rentInput.value = '';
-      peopleSelect.value = '';
-      tokenInput.value = '';
+// Reset
+resetBtn.addEventListener("click", () => {
 
-      rentError.style.display = 'none';
-      peopleError.style.display = 'none';
-      tokenError.style.display = 'none';
+    rent.value = "";
+    people.value = "";
+    token.value = "";
 
-      animateValue(onlineOutput, currentResults.online, 0);
-      animateValue(cashOutput, currentResults.cash, 0);
-      animateValue(brokerageOutput, currentResults.brokerage, 0);
+    rentError.innerText = "";
+    peopleError.innerText = "";
+    tokenError.innerText = "";
 
-      currentResults = { online: 0, cash: 0, brokerage: 0 };
-    });
-  }
+    onlineResult.innerText = "₹0";
+    cashResult.innerText = "₹0";
+    brokerageResult.innerText = "₹0";
 
-  // Copy Result Button
-  if (copyBtn) {
-    copyBtn.addEventListener('click', () => {
-      const summaryText = `--- Rent Breakdown ---\nOnline: ₹${currentResults.online.toLocaleString('en-IN')}\nCash: ₹${currentResults.cash.toLocaleString('en-IN')}\nBrokerage: ₹${currentResults.brokerage.toLocaleString('en-IN')}`;
+});
 
-      navigator.clipboard.writeText(summaryText).then(() => {
-        const originalText = copyBtn.innerHTML;
-        copyBtn.innerHTML = '✓ Copied!';
-        setTimeout(() => {
-          copyBtn.innerHTML = originalText;
-        }, 2000);
-      }).catch(err => {
-        console.error('Failed to copy: ', err);
-      });
-    });
-  }
+// Copy Result
+copyBtn.addEventListener("click", () => {
 
-  // Dark Mode Toggle
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    const text =
+`Rent Calculator
 
-      document.documentElement.setAttribute('data-theme', targetTheme);
-      themeToggleBtn.textContent = targetTheme === 'dark' ? '☀️' : '🌙';
-    });
-  }
+Online : ${onlineResult.innerText}
+Cash : ${cashResult.innerText}
+Brokerage : ${brokerageResult.innerText}`;
+
+    navigator.clipboard.writeText(text);
+
+    copyBtn.innerText = "✅ Copied";
+
+    setTimeout(() => {
+
+        copyBtn.innerText = "📋 Copy Result";
+
+    }, 2000);
+
+});
+
+// Dark Mode
+const themeBtn = document.getElementById("themeBtn");
+
+themeBtn.addEventListener("click", () => {
+
+    document.body.classList.toggle("dark");
+
+    if (document.body.classList.contains("dark")) {
+
+        themeBtn.innerHTML = "☀️ Light Mode";
+
+    } else {
+
+        themeBtn.innerHTML = "🌙 Dark Mode";
+
+    }
+
 });
