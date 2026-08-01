@@ -1,42 +1,116 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rent Calculator</title>
-<style>
-body{font-family:Arial;background:#e9f7ef;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}
-.card{background:#fff;padding:24px;border-radius:18px;box-shadow:0 8px 24px rgba(0,0,0,.15);width:360px}
-h2{text-align:center;color:#198754}label{font-weight:bold;display:block;margin-top:12px}
-input,select{width:100%;padding:11px;border:2px solid #ccc;border-radius:10px;background:#fff}
-.err{color:#d00;font-size:12px;min-height:16px;margin-top:3px}
-button{width:100%;padding:12px;border:none;border-radius:10px;color:#fff;margin-top:12px;cursor:pointer}
-.calc{background:#198754}.reset{background:#dc3545}
-.out{margin-top:18px;background:#f4fff7;border-radius:12px;padding:10px}
-.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #ddd}.row:last-child{border:none}
-.credit{text-align:right;font-size:11px;color:#777;margin-top:10px}
-</style></head><body><div class="card"><h2>Rent Calculator</h2>
-<label>Rent</label><input id="rent" type="number"><div class="err" id="erent"></div>
-<label>How Many People Stay?</label><select id="people"><option value="">Select</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select><div class="err" id="epeople"></div>
-<label>Token</label><input id="token" type="number"><div class="err" id="etoken"></div>
-<button class="calc" onclick="calculate()">Calculate</button>
-<button class="reset" onclick="resetData()">Reset</button>
-<div class="out">
-<div class="row"><span>Online</span><b id="online">₹0</b></div>
-<div class="row"><span>Cash</span><b id="cash">₹0</b></div>
-<div class="row"><span>Brokerage</span><b id="brokerage">₹0</b></div>
-</div><div class="credit">Built by Harsheet</div></div>
-<script>
-function clr(){['erent','epeople','etoken'].forEach(i=>document.getElementById(i).textContent='');}
-function calculate(){
-clr();
-let rv=rent.value.trim(),pv=people.value.trim(),tv=token.value.trim(),ok=true;
-if(!rv){erent.textContent='Please enter Rent';ok=false;}
-if(!pv){epeople.textContent='Please enter How Many People Stay?';ok=false;}
-if(!tv){etoken.textContent='Please enter Token';ok=false;}
-if(!ok)return;
-let r=+rv,p=+pv,t=+tv;
-let doc=(p*500)+500,sec=r,on,cash;
-if(r<=19000){on=r+doc+(sec-t);cash=0;}else{on=20000+(sec-t);cash=(r-20000)+doc;}
-let bro=r/2;
-online.textContent='₹'+on.toLocaleString();
-cash.textContent='₹'+cash.toLocaleString();
-brokerage.textContent='₹'+bro.toLocaleString();
-}
-function resetData(){rent.value='';people.value='';token.value='';clr();online.textContent='₹0';cash.textContent='₹0';brokerage.textContent='₹0';}
-</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rent Calculator</title>
+  
+  <!-- Manifest & Favicon -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#10b981">
+
+  <!-- Google Fonts & Stylesheet -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">🏠</div>
+        <div>
+          <h1>Rent Calculator</h1>
+          <p>Instant Online, Cash & Brokerage Breakdown</p>
+        </div>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">🌙</button>
+    </header>
+
+    <!-- Rent Form -->
+    <form id="rentForm" onsubmit="return false;">
+      
+      <!-- Rent Input -->
+      <div class="form-group">
+        <label for="rent">Rent Amount (₹)</label>
+        <div class="input-wrapper">
+          <span class="icon">₹</span>
+          <input type="number" id="rent" class="form-control" placeholder="e.g. 23000" min="0">
+        </div>
+        <div class="error-message" id="rentError">Please enter Rent</div>
+      </div>
+
+      <!-- People Select Dropdown -->
+      <div class="form-group">
+        <label for="people">How Many People Stay?</label>
+        <div class="input-wrapper">
+          <span class="icon">👥</span>
+          <select id="people" class="form-control">
+            <option value="" disabled selected>Select number of people</option>
+            <option value="1">1 Person</option>
+            <option value="2">2 People</option>
+            <option value="3">3 People</option>
+            <option value="4">4 People</option>
+            <option value="5">5 People</option>
+            <option value="6">6 People</option>
+            <option value="7">7 People</option>
+            <option value="8">8 People</option>
+            <option value="9">9 People</option>
+            <option value="10">10 People</option>
+          </select>
+          <span class="select-arrow">▼</span>
+        </div>
+        <div class="error-message" id="peopleError">Please select How Many People Stay</div>
+      </div>
+
+      <!-- Token Input -->
+      <div class="form-group">
+        <label for="token">Token Amount (₹)</label>
+        <div class="input-wrapper">
+          <span class="icon">💸</span>
+          <input type="number" id="token" class="form-control" placeholder="e.g. 5000" min="0">
+        </div>
+        <div class="error-message" id="tokenError">Please enter Token</div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="button-group">
+        <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+        <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+    </form>
+
+    <!-- Results Section -->
+    <div class="results-container">
+      <div class="result-card">
+        <div class="result-info">
+          <span class="result-label">Online</span>
+          <span class="result-value" id="onlineResult">₹0</span>
+        </div>
+      </div>
+
+      <div class="result-card highlight">
+        <div class="result-info">
+          <span class="result-label">Cash</span>
+          <span class="result-value" id="cashResult">₹0</span>
+        </div>
+      </div>
+
+      <div class="result-card brokerage">
+        <div class="result-info">
+          <span class="result-label">Brokerage</span>
+          <span class="result-value" id="brokerageResult">₹0</span>
+        </div>
+      </div>
+
+      <button type="button" class="btn-copy" id="copyBtn">📋 Copy Breakdown</button>
+    </div>
+
+  </div>
+
+  <!-- JavaScript File Link -->
+  <script src="script.js"></script>
+</body>
+</html>
