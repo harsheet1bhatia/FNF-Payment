@@ -1,326 +1,321 @@
-/* ==========================================
-   Rent Calculator - Modern Green & Dark Theme
-   ========================================== */
-
-/* Google Font Import (Poppins) */
+/* ==========================
+   Google Font
+========================== */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-:root {
-  /* Color Palette - Light Mode (Green Theme) */
-  --bg-color: #f4f7f6;
-  --card-bg: #ffffff;
-  --text-primary: #1f2937;
-  --text-secondary: #6b7280;
-  --primary: #10b981;
-  --primary-hover: #059669;
-  --primary-light: #ecfdf5;
-  --accent: #047857;
-  --border-color: #e5e7eb;
-  --input-bg: #f9fafb;
-  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-  --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-  --error: #ef4444;
-  --radius: 16px;
-  --radius-sm: 10px;
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
 }
 
-/* Dark Theme Variables */
-[data-theme="dark"] {
-  --bg-color: #0f172a;
-  --card-bg: #1e293b;
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --primary: #10b981;
-  --primary-hover: #34d399;
-  --primary-light: rgba(16, 185, 129, 0.12);
-  --accent: #34d399;
-  --border-color: #334155;
-  --input-bg: #0f172a;
-  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-  --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+body{
+    background:linear-gradient(135deg,#d9f7e8,#b5ead7);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    transition:.4s;
 }
 
-/* Base Reset & Typography */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-  -webkit-tap-highlight-color: transparent;
+/* Container */
+
+.container{
+    width:100%;
+    max-width:430px;
 }
 
-body {
-  background-color: var(--bg-color);
-  color: var(--text-primary);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  transition: var(--transition);
+/* Card */
+
+.card{
+    background:#fff;
+    border-radius:22px;
+    padding:28px;
+    box-shadow:0 15px 35px rgba(0,0,0,.12);
+    animation:fadeIn .6s ease;
 }
 
-/* Main Container */
-.app-container {
-  width: 100%;
-  max-width: 480px;
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 28px;
-  border: 1px solid var(--border-color);
-  transition: var(--transition);
-  position: relative;
-  overflow: hidden;
+/* Heading */
+
+h1{
+    text-align:center;
+    color:#198754;
+    margin-bottom:25px;
+    font-size:30px;
+    font-weight:700;
 }
 
-/* Header Section */
-.app-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
+/* Form */
+
+.form-group{
+    margin-bottom:18px;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color:#333;
 }
 
-.brand-icon {
-  width: 42px;
-  height: 42px;
-  background: var(--primary-light);
-  color: var(--primary);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
+input,
+select{
+
+    width:100%;
+    padding:14px 15px;
+    border:2px solid #dcdcdc;
+    border-radius:12px;
+    outline:none;
+    font-size:15px;
+    transition:.3s;
+    background:#fff;
+
 }
 
-.brand h1 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.2;
+input:focus,
+select:focus{
+
+    border-color:#198754;
+    box-shadow:0 0 10px rgba(25,135,84,.25);
+
 }
 
-.brand p {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
+/* Error */
+
+.error{
+
+    color:#dc3545;
+    font-size:13px;
+    margin-top:5px;
+    display:block;
+
 }
 
-/* Dark Mode Toggle Switch */
-.theme-toggle {
-  background: var(--input-bg);
-  border: 1px solid var(--border-color);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-primary);
-  font-size: 1.1rem;
-  transition: var(--transition);
+/* Buttons */
+
+button{
+
+    width:100%;
+    border:none;
+    border-radius:12px;
+    padding:15px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+    margin-top:12px;
+
 }
 
-.theme-toggle:hover {
-  transform: rotate(15deg) scale(1.05);
+.calculate-btn{
+
+    background:#198754;
+    color:#fff;
+
 }
 
-/* Form Styles */
-.form-group {
-  margin-bottom: 18px;
-  position: relative;
+.calculate-btn:hover{
+
+    background:#157347;
+    transform:translateY(-2px);
+
 }
 
-.form-group label {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 6px;
+.reset-btn{
+
+    background:#ffc107;
+    color:#222;
+
 }
 
-.input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
+.reset-btn:hover{
+
+    background:#ffca2c;
+
 }
 
-.input-wrapper .icon {
-  position: absolute;
-  left: 14px;
-  color: var(--text-secondary);
-  font-size: 1rem;
-  pointer-events: none;
+.copy-btn{
+
+    background:#0d6efd;
+    color:#fff;
+
 }
 
-.form-control {
-  width: 100%;
-  padding: 12px 14px 12px 42px;
-  background-color: var(--input-bg);
-  border: 1.5px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  font-size: 0.95rem;
-  color: var(--text-primary);
-  outline: none;
-  transition: var(--transition);
+.copy-btn:hover{
+
+    background:#0b5ed7;
+
 }
 
-.form-control:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px var(--primary-light);
+.theme-btn{
+
+    background:#212529;
+    color:#fff;
+
 }
 
-select.form-control {
-  appearance: none;
-  cursor: pointer;
+.theme-btn:hover{
+
+    background:#111;
+
 }
 
-.select-arrow {
-  position: absolute;
-  right: 14px;
-  color: var(--text-secondary);
-  pointer-events: none;
+/* Results */
+
+.result-card{
+
+    margin-top:18px;
+    background:#f8fff9;
+    border-left:6px solid #198754;
+    border-radius:14px;
+    padding:16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:.3s;
+
 }
 
-/* Inline Error Styling */
-.error-message {
-  color: var(--error);
-  font-size: 0.75rem;
-  font-weight: 500;
-  margin-top: 4px;
-  display: none;
+.result-card:hover{
 
-/* Action Buttons */
-.button-group {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 12px;
-  margin-top: 24px;
-  margin-bottom: 24px;
+    transform:scale(1.02);
+
 }
 
-.btn {
-  padding: 12px 20px;
-  border-radius: var(--radius-sm);
-  font-size: 0.95rem;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: var(--transition);
+.result-card span{
+
+    color:#555;
+    font-weight:500;
+
 }
 
-.btn-primary {
-  background-color: var(--primary);
-  color: #ffffff;
+.result-card strong{
+
+    color:#198754;
+    font-size:22px;
+
 }
 
-.btn-primary:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+/* Footer */
+
+.footer{
+
+    margin-top:25px;
+    text-align:center;
+    color:#666;
+    font-size:13px;
+
 }
 
-.btn-secondary {
-  background-color: var(--input-bg);
-  color: var(--text-secondary);
-  border: 1.5px solid var(--border-color);
+/* Dark Mode */
+
+body.dark{
+
+    background:#121212;
+
 }
 
-.btn-secondary:hover {
-  background-color: var(--border-color);
-  color: var(--text-primary);
+body.dark .card{
+
+    background:#1d1d1d;
+    color:#fff;
+
 }
 
-/* Results Cards Section */
-.results-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background: var(--input-bg);
-  padding: 16px;
-  border-radius: var(--radius-sm);
-  border: 1px dashed var(--border-color);
+body.dark label{
+
+    color:#fff;
+
 }
 
-.result-card {
-  background: var(--card-bg);
-  padding: 14px 18px;
-  border-radius: var(--radius-sm);
-  border-left: 4px solid var(--primary);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+body.dark h1{
+
+    color:#45d483;
+
 }
 
-.result-card.highlight {
-  border-left-color: #3b82f6; /* Blue accent for Cash */
+body.dark input,
+body.dark select{
+
+    background:#2a2a2a;
+    color:#fff;
+    border-color:#444;
+
 }
 
-.result-card.brokerage {
-  border-left-color: #f59e0b; /* Amber accent for Brokerage */
+body.dark .result-card{
+
+    background:#2b2b2b;
+    border-left-color:#45d483;
+
 }
 
-.result-info span {
-  display: block;
+body.dark .result-card span{
+
+    color:#ddd;
+
 }
 
-.result-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--text-secondary);
-  font-weight: 600;
+body.dark .result-card strong{
+
+    color:#45d483;
+
 }
 
-.result-value {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-top: 2px;
+body.dark .footer{
+
+    color:#bbb;
+
 }
 
-/* Copy Button */
-.btn-copy {
-  margin-top: 14px;
-  width: 100%;
-  padding: 10px;
-  background: transparent;
-  border: 1.5px dashed var(--primary);
-  color: var(--primary);
-  border-radius: var(--radius-sm);
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  transition: var(--transition);
+/* Animation */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+        transform:translateY(25px);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:translateY(0);
+
+    }
+
 }
 
-.btn-copy:hover {
-  background: var(--primary-light);
-}
+/* Responsive */
 
-/* Responsive Adjustments */
-@media (max-width: 480px) {
-  body {
-    padding: 12px;
-  }
-  .app-container {
-    padding: 20px;
-  }
+@media(max-width:480px){
+
+    .card{
+
+        padding:20px;
+
+    }
+
+    h1{
+
+        font-size:25px;
+
+    }
+
+    button{
+
+        padding:14px;
+
+    }
+
+    .result-card strong{
+
+        font-size:19px;
+
+    }
+
 }
