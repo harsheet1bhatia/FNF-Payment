@@ -32,4 +32,18 @@ border-radius:12px;margin-top:14px}
 @media(max-width:480px){
 .card{padding:18px}
 h1{font-size:24px}
+  /* Built by Harsheet */
+
+.built-by{
+    text-align:right;
+    font-size:13px;
+    color:#666;
+    margin-top:-15px;
+    margin-bottom:20px;
+}
+
+.built-by span{
+    color:#198754;
+    font-weight:600;
+}
 }
